@@ -1,1 +1,6 @@
 .vs/ 
+bin/
+obj/
+.nuget/
+appsettings.Development.json
+.env
