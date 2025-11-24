@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_notes_db
+    environment:
+      POSTGRES_USER: notesuser
+      POSTGRES_PASSWORD: notespassword
+      POSTGRES_DB: notesdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U notesuser -d notesdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: notes_backend_api 
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=notesdb;Username=notesuser;Password=notespassword
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend-network
+    restart: unless-stopped  
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  backend-network:
+    driver: bridge
