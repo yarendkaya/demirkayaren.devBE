@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: backendEnv
 
     steps:
       # 1. Kodları Github'dan sanal makineye çeker
