@@ -30,7 +30,7 @@ jobs:
           context: . # Dockerfile'ın bulunduğu dizin (Kök dizindeyse nokta kalsın)
           push: true
           # Image etiketi: kadi/image-adi:latest
-          tags: ${{ secrets.DOCKER_USERNAME }}/demirkayaren/demirkayarendevbe-backend:latest 
+          tags: ${{ secrets.DOCKER_USERNAME }}/demirkayarendevbe-backend:latest 
           
 
       # 4. Render'daki Deploy Hook URL'ini tetikler
